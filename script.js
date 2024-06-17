@@ -36,6 +36,13 @@ function buscarRota() {
 
             map.fitBounds(routeControl.getBounds());
 
+            // Calcular tempo estimado
+            let duracaoSegundos = data.routes[0].duration; // Duração em segundos
+            let duracaoMinutos = Math.round(duracaoSegundos / 60); // Duração em minutos
+
+            // Exibir tempo estimado
+            exibirTempoEstimado(duracaoMinutos);
+
             // Adicionar marcadores e balões de mensagem
             adicionarMarcadores(coordOrigem, coordDestino);
           })
@@ -73,6 +80,11 @@ function adicionarMarcadores(coordOrigem, coordDestino) {
   destinoCircle.bindPopup('<b>Seu destino</b>').openPopup();
 }
 
+function exibirTempoEstimado(tempoMinutos) {
+  let tempoElemento = document.getElementById('tempoEstimado');
+  tempoElemento.textContent = `Tempo estimado: aproximadamente ${tempoMinutos} minutos`;
+}
+
 function resetarMapa() {
   document.getElementById("enderecoOrigem").value = "";
   document.getElementById("enderecoDestino").value = "";
@@ -88,6 +100,10 @@ function resetarMapa() {
     map.removeLayer(destinoCircle);
     destinoCircle = null;
   }
+
+  // Limpar tempo estimado
+  let tempoElemento = document.getElementById('tempoEstimado');
+  tempoElemento.textContent = "";
 }
 
 function buscarCoordenadas(endereco, callback) {
@@ -113,4 +129,3 @@ function buscarCoordenadas(endereco, callback) {
 document.addEventListener("DOMContentLoaded", function() {
   initMap();
 });
-
