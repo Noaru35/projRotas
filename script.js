@@ -2,12 +2,25 @@ let map;
 let routeControl;
 let origemMarker;
 let destinoCircle;
+let origemSelecionada = false;
+let destinoSelecionado = false;
 
 function initMap() {
   map = L.map('map').setView([-23.5505, -46.6333], 13); // Inicializa o mapa com centro em São Paulo e zoom 13
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
+
+  // Adiciona listeners para capturar o clique no mapa para definir origem e destino
+  map.on('click', function(e) {
+    if (origemSelecionada) {
+      document.getElementById('enderecoOrigem').value = `${e.latlng.lat}, ${e.latlng.lng}`;
+      origemSelecionada = false;
+    } else if (destinoSelecionado) {
+      document.getElementById('enderecoDestino').value = `${e.latlng.lat}, ${e.latlng.lng}`;
+      destinoSelecionado = false;
+    }
+  });
 }
 
 function buscarRota() {
@@ -107,7 +120,7 @@ function resetarMapa() {
 }
 
 function buscarCoordenadas(endereco, callback) {
-  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${endereco}`)
+  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}`)
     .then(response => response.json())
     .then(data => {
       if (data && data.length > 0) {
@@ -123,6 +136,17 @@ function buscarCoordenadas(endereco, callback) {
       alert("Erro ao buscar endereço. Verifique a conexão ou tente novamente mais tarde.");
       callback(null);
     });
+}
+
+// Funções para selecionar origem e destino no mapa
+function selecionarOrigem() {
+  origemSelecionada = true;
+  destinoSelecionado = false;
+}
+
+function selecionarDestino() {
+  origemSelecionada = false;
+  destinoSelecionado = true;
 }
 
 // Chama a função initMap após o carregamento da página

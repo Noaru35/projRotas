@@ -5,54 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa com Rota</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    #map {
-      width: 80%;
-      height: 400px;
-      margin-bottom: 20px;
-    }
-
-    .controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .controls input[type="text"] {
-      padding: 10px;
-      width: 300px;
-      margin: 10px 0;
-    }
-
-    .controls button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .controls button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="map"></div>
   <div class="controls">
-    <input type="text" id="enderecoOrigem" placeholder="Digite o endereço de origem">
-    <input type="text" id="enderecoDestino" placeholder="Digite o endereço de destino">
+    <div class="endereco">
+      <input type="text" id="enderecoOrigem" placeholder="Digite o endereço de origem">
+      <button onclick="selecionarOrigem()">Selecionar Origem no Mapa</button>
+      <ul id="enderecoOrigem-sugestoes"></ul>
+    </div>
+    <div class="endereco">
+      <input type="text" id="enderecoDestino" placeholder="Digite o endereço de destino">
+      <button onclick="selecionarDestino()">Selecionar Destino no Mapa</button>
+      <ul id="enderecoDestino-sugestoes"></ul>
+    </div>
     <button onclick="buscarRota()">Buscar Rota</button>
     <button onclick="resetarMapa()">Resetar</button>
   </div>
